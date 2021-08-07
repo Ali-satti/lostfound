@@ -1,0 +1,73 @@
+swagger: '2.0'
+info:
+  version: '1.0.0'
+  title: Lost and Found
+schemes: [http]
+host: localhost
+basePath: /api
+consumes: [application/json]
+produces: [application/json]
+paths:
+  /items:
+    post:
+      tags: [Item]
+      operationId: CreateItem
+      parameters:
+        - in: body
+          name: item
+          required: true
+          schema:
+            $ref: '#/definitions/Item'
+      responses:
+        201:
+          description: Item Created
+          schema:
+            $ref: '#/definitions/Item'
+        400:
+          description: Bad Request
+    get:
+      tags: [Read items]
+      operationId: ListItem
+      parameters:
+        - in: query
+          name: kind
+          type: string
+      responses:
+        200:
+          description: 'Items list'
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Item'
+  /items/{itemId}:
+    get:
+      tags: [Read Items]
+      operationId: GetItemById
+      parameters:
+        - name: itemId
+          in: path
+          required: true
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: Item get
+          schema:
+            $ref: '#/definitions/Item'
+        400:
+          description: Bad Request
+        404:
+          description: Item Not Found
+
+definitions:
+  Item:
+    type: object
+    required:
+      - name
+    properties:
+      id:
+        type: integer
+      kind:
+        type: string
+      name:
+        type: string
